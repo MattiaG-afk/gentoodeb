@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-I.
-SRC=$(wildcard *.c)
-OBJ=$(gentoodeb.c)
+SRC=$(wildcard gentoodeb.c)
+OBJ=$(SRC:.c=.o)
 
 PREFIX=/usr/bin
 
@@ -9,14 +9,14 @@ PREFIX=/usr/bin
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 ebuildexample: $(OBJ)
-	$(CC) $(OBJ) -o gentoodeb
+	$(CC) -o gentoodeb $(OBJ)
 
 .PHONY: clean
 clean:
 	rm -f $(OBJ) gentoodeb
 
 .PHONY: install
-install: gentoodeb
+install: ebuildexample
 	mkdir -p $(DESTDIR)$(PREFIX)
 	cp $< $(DESTDIR)$(PREFIX)/gentoodeb
 
