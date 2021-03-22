@@ -1,25 +1,2 @@
-CC=gcc
-CFLAGS=-I.
-SRC=$(wildcard gentoodeb.c)
-OBJ=$(SRC:.c=.o)
-
-PREFIX=/usr/bin
-
-%.o: %.c
-	$(CC) -c -o $@ $< $(CFLAGS)
-
-gentoodeb: $(OBJ)
-	$(CC) -o gentoodeb $(OBJ)
-
-.PHONY: clean
-clean:
-	rm -f $(OBJ) gentoodeb
-
-.PHONY: install
-install: gentoodeb
-	mkdir -p $(DESTDIR)$(PREFIX)
-	cp $< $(DESTDIR)$(PREFIX)/gentoodeb
-
-.PHONY: uninstall
-uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/gentoodeb
+gentoodeb: gentoodeb.c
+	gcc -O3 -march=native gentoodeb.c -o gentoodeb
