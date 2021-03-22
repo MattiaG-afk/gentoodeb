@@ -8,7 +8,7 @@ PREFIX=/usr/bin
 %.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-ebuildexample: $(OBJ)
+gentoodeb: $(OBJ)
 	$(CC) -o gentoodeb $(OBJ)
 
 .PHONY: clean
@@ -16,10 +16,9 @@ clean:
 	rm -f $(OBJ) gentoodeb
 
 .PHONY: install
-install: ebuildexample
+install: gentoodeb
 	mkdir -p $(DESTDIR)$(PREFIX)
-	cp $(DESTDIR)$PREFIX)/gentoodeb /usr/bin/gentoodeb
-	# cp $< $(DESTDIR)$(PREFIX)/gentoodeb
+	cp $< $(DESTDIR)$(PREFIX)/gentoodeb
 
 .PHONY: uninstall
 uninstall:
