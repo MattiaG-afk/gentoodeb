@@ -1,6 +1,7 @@
 debrpm: debrpm.py
 	mkdir -p /var/log/debrpm
 	mkdir -p /var/db/repos/debrpm
+	mkdir -p /var/tmp/debrpm
 	chmod +x debrpm.py
 	mv debrpm.py /usr/bin/debrpm
 	debrpm -u
