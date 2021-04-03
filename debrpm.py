@@ -99,13 +99,13 @@ else:
                 packet_name = packet[0:packet.find('[')]
                 packet_description = packet[(packet.find('[')+1):packet.find(']')]
                 packet_url = packet[(packet.find('(')+1):packet.find(')')]
-                print("Packet:", packet_name)
-                print("Description:", packet_description)
-                print("URL:", packet_url)
+                print("\033[1;31mPacket\033[0m:", packet_name)
+                print("\033[;32mDescription\033[0m:", packet_description)
+                print("\033[;32mURL\033[0m:", packet_url)
                 if packet_url.find('.deb') != -1:
-                    print("Type: .deb\n")
+                    print("\033[;32mType\033[0m: .deb\n")
                 elif packet_url.find('.rpm') != -1:
-                    print("Type: .rpm\n")
+                    print("\033[;32mType\033[0m: .rpm\n")
         if not find:
             print("The packet is not in the repository")
     if sys.argv[1] == '-u' or sys.argv[1] == '--update':
