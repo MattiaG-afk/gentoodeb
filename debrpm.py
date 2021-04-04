@@ -16,7 +16,7 @@ if not len(sys.argv[1:]) or sys.argv[1] == '-h' or sys.argv[1] == '--help':
 else:
     if sys.argv[1] == '-i' or sys.argv[1] == '--install':
         find = 0
-        file = open('/var/db/repos/debrpm/packages.txt', 'r')
+        file = open('/var/db/debrpm/packages.txt', 'r')
         packets = file.readlines()
         for packet in packets:
             if packet.find(sys.argv[2]) != -1:
@@ -91,7 +91,7 @@ else:
     if sys.argv[1] == '-s' or sys.argv[1] == '--search':
         find = 0
         print("Search results:")
-        file = open('/var/db/repos/debrpm/packages.txt', 'r')
+        file = open('/var/db/debrpm/packages.txt', 'r')
         packets = file.readlines()
         for packet in packets:
             if packet.find(sys.argv[2]) != -1:
@@ -109,6 +109,6 @@ else:
         if not find:
             print("The packet is not in the repository")
     if sys.argv[1] == '-u' or sys.argv[1] == '--update':
-        print("Updating the /var/db/repos/debrpm/packages.txt file...")
+        print("Updating the /var/db/debrpm/packages.txt file...")
         r = requests.get('https://raw.githubusercontent.com/MattiaG-afk/debrpm-repo/main/packages.txt', allow_redirects=True)
-        open('/var/db/repos/debrpm/packages.txt', 'wb').write(r.content)
+        open('/var/db/debrpm/packages.txt', 'wb').write(r.content)
