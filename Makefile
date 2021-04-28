@@ -1,8 +1,6 @@
 debrpm: debrpm.py
 	mkdir -p /var/log/debrpm
-	mkdir -p /var/tmp/debrpm
 	chmod +x debrpm.py
-	mv debrpm.py /usr/bin/debrpm
-	debrpm -u
+	cp debrpm.py /usr/bin/debrpm
 uninstall:
 	rm -rf /var/log/debrpm /usr/bin/debrpm
