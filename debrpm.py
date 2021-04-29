@@ -60,12 +60,18 @@ elif '-u' in options or '--uninstall' in options:
     try:
         packet_log = open(packet)
         root = packet_log.readline().split('Root directory:')[1].replace('./','')
+        dir = []
         if root != '/':
-            print('Deleting files: ')
             for line in packet_log.readlines():
-                print(line.replace('./', root + '/').replace('\n', ''), end='\n')
-                subprocess.run('rm -rf ' + line.replace('./', root + '/').replace('\n', ''), shell=True)
-
+                remove = root.replace('\n', '') + line.replace('\n', '').replace('./', '/')
+                if os.path.isdir(remove):
+                    dir.append(remove)
+                else:
+                    subprocess.run('rm -f ' + line.replace('\n', ''), shell=True)
+            dir.sort()
+            dir.reverse()
+            for directory in dir:
+                subprocess.run('rmdir ' + directory, shell=True)
     except:
         print('Package not installed')
 
