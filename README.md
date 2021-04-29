@@ -8,7 +8,7 @@ cd debrpm
 sudo make
 ```
 ## Uninstall packages
-The option is currently optional. Be careful when using it as it may delete important folders (it deletes all directories marked inside the log file, so it cannot be used when using / as root directory)
+You have to insert the name of the log file. If you don't write the absolute path (without the '/var/log/debrpm/') or without the .log extension will be added automatically
 ## Wait, wait, wait...
 * Use debrpm only if the package you need is not present in the repositories of the package manager of your GNU/Linux operating system;
 * Installing a package with debrpm when it has already been installed with the package manager of your GNU/Linux operating system may harm your system
