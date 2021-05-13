@@ -1,5 +1,5 @@
 # DEBRPM
-<p align="center"><a href="https://github.com/MattiaG-afk/debrpm/blob/test/Images/debrpm_small.png"></a></p>
+<p align="center"><a href="https://github.com/MattiaG-afk/debrpm"><img src="https://github.com/MattiaG-afk/debrpm/blob/test/Images/debrpm_small.png" alt='DEBRPM'></a></p>
 
 An easy to use installer for .deb and .rpm packet on Gentoo, Slackware and other distros.
 ## Installation
