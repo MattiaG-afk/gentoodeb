@@ -3,8 +3,9 @@ import os, sys, subprocess
 
 options = {}
 log_dir = '/var/log/debrpm'
-i = 0
+tmp_dir = '/var/tmp/debrpm'
 
+i = 0
 for option in sys.argv:
     if option.startswith('-'):
         if not('help' in option or 'h' in option) and not('list' in option or 'l' in option):
@@ -50,8 +51,7 @@ elif '-u' in options or '--uninstall' in options:
         packet = options['-u']
     except:
         packet = options['--uninstall']
-    if not packet.startswith(log_dir):
-        packet = os.path.join(log_dir, packet)
+    packet = os.path.join(log_dir, packet)
     if not packet.endswith('.log'):
         packet += '.log'
     try:
