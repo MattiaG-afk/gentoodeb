@@ -78,10 +78,7 @@ elif '-l' in options or '--list' in options:
     for file in os.listdir(log_dir):
         if file.endswith('.log'):
             index += 1
-            if '.deb' in file:
-                print('\u001b[33;1mName\u001b[00;0m: %s, \u001b[33;1mtype\u001b[00;0m: deb, \u001b[33;1mlog file\u001b[00;0m: %s' % (file.replace('.deb.log', ''), os.path.join(log_dir, file)))
-            elif '.rpm' in file:
-                print('\u001b[33;1mName\u001b[00;0m: %s, \u001b[33;1mtype\u001b[00;0m: rpm, \u001b[33;1mlog file\u001b[00;0m: %s' % (file.replace('.rpm.log', ''), os.path.join(log_dir, file)))
+            print('\u001b[33;1mName\u001b[00;0m: %s, \u001b[33;1mtype\u001b[00;0m: %s, \u001b[33;1mlog file\u001b[00;0m: %s' % (file.replace('.deb.log', ''), "deb" if ".deb" in file else "rpm", os.path.join(log_dir, file)))
     print('\u001b[36;1mNumber of installed packages\u001b[00;0m: %s' % index)
 
 else:
