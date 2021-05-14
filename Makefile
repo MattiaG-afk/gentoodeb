@@ -3,4 +3,4 @@ debrpm: debrpm.py
 	chmod +x debrpm.py
 	cp debrpm.py /usr/bin/debrpm
 uninstall:
-	rm -rf /var/log/debrpm /var/db/debrpm /usr/bin/debrpm
+	rm -rf /var/log/debrpm /var/tmp/debrpm /usr/bin/debrpm
