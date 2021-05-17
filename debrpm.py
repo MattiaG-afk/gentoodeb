@@ -34,7 +34,7 @@ if '-i' in options or '--install' in options:
         os.chdir(tmp_dir)
         subprocess.run("sudo ar x %s" % os.path.join(tmp_dir, file), shell=True)
         subprocess.run("rm -f %s %s" % (os.path.join(tmp_dir, "debian-binary"), os.path.join(tmp_dir, "control.tar.xz")), shell=True)
-        subprocess.run("sudo tar xpvf %s > %s" % (os.path.join(tmp_dir, "data.tar.xz"), log_file), shell=True)
+        subprocess.run("sudo tar xpvf %s >> %s" % (os.path.join(tmp_dir, "data.tar.xz"), log_file), shell=True)
         subprocess.run("rm -f %s" % os.path.join(tmp_dir, "data.tar.xz"), shell=True)
         subprocess.run("mv %s %s" % (os.path.join(tmp_dir, "*"), root), shell=True)
     elif file.find('.rpm') != -1:
@@ -42,7 +42,7 @@ if '-i' in options or '--install' in options:
         subprocess.run("sudo cp %s %s" % (os.path.join(os.curdir, file), os.path.join(tmp_dir, file)), shell=True)
         os.chdir(tmp_dir)
         subprocess.run("rpm2tarxz %s" % os.path.join(os.curdir, file), shell=True)
-        subprocess.run("sudo tar xpvf %s > %s" % (os.path.join(os.curdir, file.replace(".rpm", ".tar.xz")), log_file), shell=True)
+        subprocess.run("sudo tar xpvf %s >> %s" % (os.path.join(os.curdir, file.replace(".rpm", ".tar.xz")), log_file), shell=True)
         subprocess.run("rm -f %s %s" %(os.path.join(os.curdir, file), os.path.join(os.curdir, file.replace(".rpm", ".tar.xz"))), shell=True)
         subprocess.run("mv %s %s" % (os.path.join(tmp_dir, "*"), root), shell=True)
     else:
@@ -55,24 +55,24 @@ elif '-u' in options or '--uninstall' in options:
     packet = os.path.join(log_dir, packet)
     if not packet.endswith('.log'):
         packet += '.log'
-    try:
-        packet_log = open(packet)
-        root = packet_log.readline().split('Root directory:')[1].replace('./','')
-        dir = []
-        if root != '/':
-            for line in packet_log.readlines():
-                remove = root.replace('\n', '') + line.replace('\n', '').replace('./', '/')
-                if os.path.isdir(remove):
-                    dir.append(remove)
-                else:
-                    subprocess.run('rm -f ' + line.replace('\n', ''), shell=True)
-            dir.sort()
-            dir.reverse()
-            for directory in dir:
-                subprocess.run('rmdir ' + directory, shell=True)
-            subprocess.run("rm -f %s" % os.path.join(log_dir, packet), shell=True)
-    except:
-        print('Package not installed')
+    # try:
+    packet_log = open(packet)
+    root = packet_log.readline().split('Root directory:')[1].replace('./','')
+    dir = []
+    if root != '/':
+        for line in packet_log.readlines():
+            remove = root.replace('\n', '') + line.replace('\n', '').replace('./', '/')
+            if os.path.isdir(remove):
+                dir.append(remove)
+            else:
+                subprocess.run('rm -f ' + line.replace('\n', ''), shell=True)
+        dir.sort()
+        dir.reverse()
+        for directory in dir:
+            subprocess.run('rmdir ' + directory, shell=True)
+        subprocess.run("rm -f %s" % os.path.join(log_dir, packet), shell=True)
+    # except:
+        # print('Package not installed')
 elif '-l' in options or '--list' in options:
     index = 0
     for file in os.listdir(log_dir):
