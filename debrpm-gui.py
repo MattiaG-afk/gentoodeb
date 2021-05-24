@@ -1,18 +1,11 @@
+#!/usr/bin/python3
 import os, sys, subprocess
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilename, askdirectory
 from tkinter import *
 
 options = {}
 log_dir = '/var/log/debrpm'
 tmp_dir = '/var/tmp/debrpm'
-
-def installFile(file):
-    print(file)
-    print('Root dir:', root_dir.get())
-
-def uninstallFile(file):
-    print(file)
-    print('Root dir:', root_dir.get())
 
 '''
 i = 0
@@ -95,11 +88,24 @@ elif '-l' in options or '--list' in options:
 
 root = Tk()
 root.title('Debrpm GUI')
-Label(root, text='Select the file that you want to install:').pack(side=TOP, expand=YES, fill=BOTH)
-root_dir = Entry(root)
+root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file='/usr/share/pixmaps/debrpm-GUI.png'))
+
+row = Frame(root)
+Label(row, text='Select the file that you want to install:').pack(side=LEFT, expand=YES, fill=BOTH)
+file = Entry(row)
+file.pack(side=LEFT, expand=YES, fill=X)
+Button(row, text='Browse file', command=askopenfilename).pack(side=RIGHT, expand=YES, fill=BOTH)
+row.pack(expand=YES, fill=BOTH)
+
+row = Frame(root)
+Label(row, text='Root directory:').pack(side=LEFT, expand=YES, fill=BOTH)
+root_dir = Entry(row)
 root_dir.insert(0, '/')
-root_dir.pack(side=TOP, expand=YES, fill=X)
-Button(root, text='Install', command=(lambda: installFile(askopenfilename()))).pack(side=RIGHT, fill=BOTH)
-Button(root, text='Uninstall', command=(lambda: uninstallFile(askopenfilename()))).pack(side=RIGHT, fill=BOTH)
+root_dir.pack(side=LEFT, expand=YES, fill=X)
+Button(row, text='Browse directory', command=askdirectory).pack(side=RIGHT, expand=YES, fill=BOTH)
+row.pack(expand=YES, fill=BOTH)
+
+Button(root, text='Install', command=(lambda: print('install'))).pack(side=RIGHT, fill=BOTH)
+Button(root, text='Uninstall', command=(lambda: print('uninstall'))).pack(side=RIGHT, fill=BOTH)
 
 root.mainloop()
