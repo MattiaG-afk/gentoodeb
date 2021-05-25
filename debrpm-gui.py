@@ -1,23 +1,23 @@
 #!/usr/bin/python3
 import os, sys, subprocess
 from tkinter.filedialog import askopenfilename, askdirectory
+from tkinter.messagebox import showinfo, showerror
 from tkinter import *
 
 options = {}
 log_dir = '/var/log/debrpm'
 tmp_dir = '/var/tmp/debrpm'
 
-'''
-i = 0
-for option in sys.argv:
-    if option.startswith('-'):
-        if not('help' in option or 'h' in option) and not('list' in option or 'l' in option):
-            options[option] = sys.argv[i+1]
-        else:
-            options[option] = ''
-    i += 1
+def fillEntry(entry, value):
+    entry.delete(0, END)
+    entry.insert(0, value)
 
-if '-i' in options or '--install' in options:
+def installFile():
+    try:
+        showinfo('Debrpm GUI', 'Package installed successfully')
+    except:
+        showerror('Debrpm GUI', 'An error occurred:\n%s' % sys.exc_info[1])
+    '''
     try:
         file = options['-i']
     except:
@@ -50,7 +50,14 @@ if '-i' in options or '--install' in options:
         subprocess.run("mv %s %s" % (os.path.join(tmp_dir, "*"), root), shell=True)
     else:
         print('\u001b[31;1mUnknown file. Currently supported files are: .deb and .rpm\u001b[00;0m')
-elif '-u' in options or '--uninstall' in options:
+    '''
+
+def uninstallFile():
+    try:
+        showinfo('Debrpm GUI', 'Package uninstalled successfully')
+    except:
+        pass
+    '''
     try:
         packet = options['-u']
     except:
@@ -76,36 +83,55 @@ elif '-u' in options or '--uninstall' in options:
             subprocess.run("rm -f %s" % os.path.join(log_dir, packet), shell=True)
     except:
         print('Exited with error:', sys.exc_info[1])
-elif '-l' in options or '--list' in options:
+    '''
+
+def listInstalled():
+    packageDescription = [['Name:', 'Type:', 'Log file:']]
+
+    listWindow = Toplevel()
+    listWindow.tk.call('wm', 'iconphoto', listWindow._w, PhotoImage(file='/usr/share/pixmaps/debrpm-GUI.png'))
+    listWindow.resizable(width=0, height=0)
+
     index = 0
     for file in os.listdir(log_dir):
         if file.endswith('.log'):
             index += 1
-            print('\u001b[33;1mName\u001b[00;0m: %s, \u001b[33;1mtype\u001b[00;0m: %s, \u001b[33;1mlog file\u001b[00;0m: %s' % (file.replace('.deb.log', ''), "deb" if ".deb" in file else "rpm", os.path.join(log_dir, file)))
-    print('\u001b[36;1mNumber of installed packages\u001b[00;0m: %s' % index)
-'''
+            packageDescription.append([file.replace('.deb.log', ''), "deb" if ".deb" in file else "rpm", os.path.join(log_dir, file)])
 
+    ii = 0
+    for i in packageDescription:
+        jj = 0
+        for j in i:
+            Label(listWindow, text=j).grid(row=ii, column=jj)
+            jj += 1
+        ii += 1
+    Label(listWindow, text='Number of installed packages: %s' % index).grid()
+
+    listWindow.grab_set()
+    listWindow.focus_set()
+    listWindow.wait_window()
 
 root = Tk()
 root.title('Debrpm GUI')
 root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file='/usr/share/pixmaps/debrpm-GUI.png'))
 
 row = Frame(root)
-Label(row, text='Select the file that you want to install:').pack(side=LEFT, expand=YES, fill=BOTH)
+Label(row, text='Select the file that you want to install:').pack(side=LEFT, fill=BOTH)
 file = Entry(row)
 file.pack(side=LEFT, expand=YES, fill=X)
-Button(row, text='Browse file', command=askopenfilename).pack(side=RIGHT, expand=YES, fill=BOTH)
+Button(row, text='Browse file', command=(lambda: fillEntry(file, askopenfilename()))).pack(side=RIGHT, expand=YES, fill=BOTH)
 row.pack(expand=YES, fill=BOTH)
 
 row = Frame(root)
-Label(row, text='Root directory:').pack(side=LEFT, expand=YES, fill=BOTH)
+Label(row, text='Root directory:').pack(side=LEFT, fill=BOTH)
 root_dir = Entry(row)
 root_dir.insert(0, '/')
 root_dir.pack(side=LEFT, expand=YES, fill=X)
-Button(row, text='Browse directory', command=askdirectory).pack(side=RIGHT, expand=YES, fill=BOTH)
+Button(row, text='Browse directory', command=(lambda: fillEntry(root_dir, askdirectory()))).pack(side=RIGHT, expand=YES, fill=BOTH)
 row.pack(expand=YES, fill=BOTH)
 
-Button(root, text='Install', command=(lambda: print('install'))).pack(side=RIGHT, fill=BOTH)
-Button(root, text='Uninstall', command=(lambda: print('uninstall'))).pack(side=RIGHT, fill=BOTH)
+Button(root, text='List', command=listInstalled).pack(side=LEFT, expand=NO, fill=BOTH)
+Button(root, text='Install', command=installFile).pack(side=RIGHT, fill=BOTH)
+Button(root, text='Uninstall', command=uninstallFile).pack(side=RIGHT, fill=BOTH)
 
 root.mainloop()
